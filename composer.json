@@ -1,0 +1,42 @@
+{
+    "name": "guilty/hubspot-connector",
+    "description": "Expose Hubspot API features in Twig and pull in content from your HubSpot Portal.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "hubspot connector"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Guilty AS",
+            "homepage": "https://guilty.no"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1",
+        "ryanwinchester/hubspot-php": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "Guilty\\HubspotConnector\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "HubSpot Connector",
+        "handle": "hubspot-connector",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "developer": "Guilty AS",
+        "developerEmail": "tech@guilty.no",
+        "developerUrl": "https://guilty.no",
+        "components": {
+            "hubspot": "Guilty\\HubspotConnector\\services\\Hubspot"
+        },
+        "class": "Guilty\\HubspotConnector\\HubspotConnector"
+    }
+}
