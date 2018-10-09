@@ -28,14 +28,14 @@ class HubspotConnectorVariable
      * @param null $optional
      * @return string
      */
-    public function blogs()
+    public function blogs($params = [])
     {
-        return HubspotConnector::getInstance()->hubspot->getBlogs()->objects;
+        return HubspotConnector::getInstance()->hubspot->getBlogs($params)->objects;
     }
 
-    public function blogPosts($blogId)
+    public function blogPosts($blogId, $params = [])
     {
-        return HubspotConnector::getInstance()->hubspot->getBlogPosts($blogId)->objects;
+        return HubspotConnector::getInstance()->hubspot->getBlogPosts($blogId, $params)->objects;
     }
 
     public function blogPost($blogPostId)

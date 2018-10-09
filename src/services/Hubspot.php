@@ -53,14 +53,16 @@ class Hubspot extends Component
 
     }
 
-    public function getBlogs()
+    public function getBlogs($params = [])
     {
-        return $this->blogs->all()->getData();
+        return $this->blogs->all($params)->getData();
     }
 
-    public function getBlogPosts($blogId)
+    public function getBlogPosts($blogId, $params = [])
     {
-        return $this->blogPosts->all(["content_group_id" => $blogId])->getData();
+        return $this->blogPosts->all(array_merge($params, [
+            "content_group_id" => $blogId,
+        ]))->getData();
     }
 
     public function getBlogPost($blogPostId)
