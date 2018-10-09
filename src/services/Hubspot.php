@@ -19,6 +19,7 @@ use SevenShores\Hubspot\Factory;
 use SevenShores\Hubspot\Http\Client;
 use SevenShores\Hubspot\Resources\BlogPosts;
 use SevenShores\Hubspot\Resources\Blogs;
+use SevenShores\Hubspot\Resources\BlogTopics;
 use SevenShores\Hubspot\Resources\Contacts;
 
 /**
@@ -40,6 +41,9 @@ class Hubspot extends Component
     /** @var BlogPosts */
     protected $blogPosts;
 
+    /** @var BlogTopics */
+    protected $blogTopics;
+
     public function init()
     {
         parent::init();
@@ -50,6 +54,7 @@ class Hubspot extends Component
         $this->contacts = new Contacts($client);
         $this->blogs = new Blogs($client);
         $this->blogPosts = new BlogPosts($client);
+        $this->blogTopics = new BlogTopics($client);
 
     }
 
@@ -68,6 +73,11 @@ class Hubspot extends Component
     public function getBlogPost($blogPostId)
     {
         return $this->blogPosts->getById($blogPostId)->getData();
+    }
+
+    public function getBlogTopics($params = [])
+    {
+        return $this->blogTopics->all($params)->getData();
     }
 
 }

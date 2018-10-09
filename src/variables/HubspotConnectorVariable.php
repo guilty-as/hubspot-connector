@@ -10,9 +10,7 @@
 
 namespace Guilty\HubspotConnector\variables;
 
-use Craft;
 use Guilty\HubspotConnector\HubspotConnector;
-use Guilty\HubspotConnector\services\Hubspot;
 
 /**
  * @author    Guilty AS
@@ -21,13 +19,6 @@ use Guilty\HubspotConnector\services\Hubspot;
  */
 class HubspotConnectorVariable
 {
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @param null $optional
-     * @return string
-     */
     public function blogs($params = [])
     {
         return HubspotConnector::getInstance()->hubspot->getBlogs($params)->objects;
@@ -41,5 +32,10 @@ class HubspotConnectorVariable
     public function blogPost($blogPostId)
     {
         return HubspotConnector::getInstance()->hubspot->getBlogPost($blogPostId);
+    }
+
+    public function blogTopics($params = [])
+    {
+        return HubspotConnector::getInstance()->hubspot->getBlogTopics($params)->objects;
     }
 }
