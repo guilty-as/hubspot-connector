@@ -38,4 +38,9 @@ class HubspotConnectorVariable
     {
         return HubspotConnector::getInstance()->hubspot->getBlogTopics($params)->objects;
     }
+
+    public function totalBlogPosts($blogId, $params = [])
+    {
+        return HubspotConnector::getInstance()->hubspot->getBlogPosts($blogId, $params)->total;
+    }
 }
