@@ -10,12 +10,8 @@
 
 namespace Guilty\HubspotConnector\services;
 
-use craft\helpers\App;
-use Guilty\HubspotConnector\HubspotConnector;
-
-use Craft;
 use craft\base\Component;
-use SevenShores\Hubspot\Factory;
+use Guilty\HubspotConnector\HubspotConnector;
 use SevenShores\Hubspot\Http\Client;
 use SevenShores\Hubspot\Resources\BlogPosts;
 use SevenShores\Hubspot\Resources\Blogs;
@@ -29,7 +25,6 @@ use SevenShores\Hubspot\Resources\Contacts;
  */
 class Hubspot extends Component
 {
-
     // Public Methods
     // =========================================================================
     /** @var Contacts */
@@ -44,18 +39,35 @@ class Hubspot extends Component
     /** @var BlogTopics */
     protected $blogTopics;
 
+    /** @var string */
+    protected $apiKey;
+
     public function init()
     {
         parent::init();
 
-        $apiKey = HubspotConnector::$plugin->getSettings()->apiKey;
+        // TODO(10 okt 2018) ~ Helge: Setup default blogId
 
-        $client = new Client(['key' => $apiKey]);
+        $this->apiKey = HubspotConnector::$plugin->getSettings()->apiKey;
+
+        if ($this->hasApiKey()) {
+            $this->setupClients();
+        }
+    }
+
+    protected function setupClients()
+    {
+        $client = new Client(['key' => $this->apiKey]);
+
         $this->contacts = new Contacts($client);
         $this->blogs = new Blogs($client);
         $this->blogPosts = new BlogPosts($client);
         $this->blogTopics = new BlogTopics($client);
+    }
 
+    public function hasApiKey()
+    {
+        return empty($this->apiKey) === false;
     }
 
     public function getBlogs($params = [])
