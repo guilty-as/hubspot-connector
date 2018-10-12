@@ -1,12 +1,4 @@
 <?php
-/**
- * HubSpot Connector plugin for Craft CMS 3.x
- *
- * Expose Hubspot api features in Twig and pull in content from your HubSpot Portal.
- *
- * @link      https://guilty.no
- * @copyright Copyright (c) 2018 Guilty AS
- */
 
 namespace Guilty\HubspotConnector\services;
 
@@ -18,15 +10,8 @@ use SevenShores\Hubspot\Resources\Blogs;
 use SevenShores\Hubspot\Resources\BlogTopics;
 use SevenShores\Hubspot\Resources\Contacts;
 
-/**
- * @author    Guilty AS
- * @package   HubspotConnector
- * @since     1.0.0
- */
 class Hubspot extends Component
 {
-    // Public Methods
-    // =========================================================================
     /** @var Contacts */
     protected $contacts;
 
@@ -42,13 +27,14 @@ class Hubspot extends Component
     /** @var string */
     protected $apiKey;
 
+
     public function init()
     {
         parent::init();
 
-        // TODO(10 okt 2018) ~ Helge: Setup default blogId
+        $settings = HubspotConnector::$plugin->getSettings();
 
-        $this->apiKey = HubspotConnector::$plugin->getSettings()->apiKey;
+        $this->apiKey = $settings->apiKey;
 
         if ($this->hasApiKey()) {
             $this->setupClients();
@@ -75,7 +61,7 @@ class Hubspot extends Component
         return $this->blogs->all($params)->getData();
     }
 
-    public function getBlogPosts($blogId, $params = [])
+    public function getBlogPosts($blogId = false, $params = [])
     {
         return $this->blogPosts->all(array_merge($params, [
             "content_group_id" => $blogId,
@@ -91,5 +77,4 @@ class Hubspot extends Component
     {
         return $this->blogTopics->all($params)->getData();
     }
-
 }

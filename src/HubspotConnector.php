@@ -84,8 +84,23 @@ class HubspotConnector extends Plugin
         return Craft::$app->view->renderTemplate(
             'hubspot-connector/settings',
             [
-                'settings' => $this->getSettings()
+                'settings' => $this->getSettings(),
+                'blogList' => $this->listHubspotBlogs(),
             ]
         );
+    }
+
+    private function listHubspotBlogs()
+    {
+        if (!$this->hubspot->hasApiKey()) {
+            return [];
+        }
+
+        return array_map(function ($blog) {
+            return [
+                "label" => $blog->name,
+                "value" => $blog->id,
+            ];
+        }, $this->hubspot->getBlogs()->objects);
     }
 }

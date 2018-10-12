@@ -1,24 +1,25 @@
-{# @var craft \craft\web\twig\variables\CraftVariable #}
-{#
-/**
- * HubSpot Connector plugin for Craft CMS 3.x
- *
- * HubSpot Connector Settings.twig
- *
- * @author    Guilty AS
- * @copyright Copyright (c) 2018 Guilty AS
- * @link      https://guilty.no
- * @package   HubspotConnector
- * @since     1.0.0
- */
-#}
-
 {% import "_includes/forms" as forms %}
-
 
 {{ forms.textField({
     label: 'Hubspot API Key',
     instructions: 'Enter your Hubspot API Key',
     name: 'apiKey',
     value: settings['apiKey']})
+}}
+
+{{ forms.selectField({
+    label: 'Default Blog Id',
+    instructions: 'The Default blog id that will be used when you don\'t specify a blog ID explicitly',
+    name: 'defaultBlogId',
+    options: blogList,
+    value: settings['defaultBlogId']})
+}}
+
+<hr>
+
+{{ forms.lightswitchField({
+    label: 'Enable Blog Subscription Endpoint?',
+    instructions: 'Registers a controller action that allows you to subscribe a user to blog updates',
+    name: 'enableBlogSubscriptionEndpoint',
+    value: settings['enableBlogSubscriptionEndpoint']})
 }}

@@ -10,37 +10,26 @@
 
 namespace Guilty\HubspotConnector\models;
 
-use Guilty\HubspotConnector\HubspotConnector;
-
-use Craft;
 use craft\base\Model;
 
-/**
- * @author    Guilty AS
- * @package   HubspotConnector
- * @since     1.0.0
- */
 class Settings extends Model
 {
-    // Public Properties
-    // =========================================================================
-
     /**
      * @var string
      */
     public $apiKey = '';
 
-    // Public Methods
-    // =========================================================================
-
     /**
-     * @inheritdoc
+     * @var bool
      */
+    public $enableBlogSubscriptionEndpoint = false;
+
     public function rules()
     {
         return [
             ['apiKey', 'string'],
             ['apiKey', 'required'],
+            ['enableBlogSubscriptionEndpoint', 'bool'],
         ];
     }
 }
