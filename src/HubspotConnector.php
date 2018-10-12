@@ -85,22 +85,7 @@ class HubspotConnector extends Plugin
             'hubspot-connector/settings',
             [
                 'settings' => $this->getSettings(),
-                'blogList' => $this->listHubspotBlogs(),
             ]
         );
-    }
-
-    private function listHubspotBlogs()
-    {
-        if (!$this->hubspot->hasApiKey()) {
-            return [];
-        }
-
-        return array_map(function ($blog) {
-            return [
-                "label" => $blog->name,
-                "value" => $blog->id,
-            ];
-        }, $this->hubspot->getBlogs()->objects);
     }
 }
