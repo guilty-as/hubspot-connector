@@ -8,6 +8,7 @@ use SevenShores\Hubspot\Http\Client;
 use SevenShores\Hubspot\Resources\BlogPosts;
 use SevenShores\Hubspot\Resources\Blogs;
 use SevenShores\Hubspot\Resources\BlogTopics;
+use SevenShores\Hubspot\Resources\ContactProperties;
 use SevenShores\Hubspot\Resources\Contacts;
 
 class Hubspot extends Component
@@ -23,6 +24,9 @@ class Hubspot extends Component
 
     /** @var BlogTopics */
     protected $blogTopics;
+
+    /** @var ContactProperties */
+    protected $contactProperties;
 
     /** @var string */
     protected $apiKey;
@@ -49,6 +53,7 @@ class Hubspot extends Component
         $this->blogs = new Blogs($client);
         $this->blogPosts = new BlogPosts($client);
         $this->blogTopics = new BlogTopics($client);
+        $this->contactProperties = new ContactProperties($client);
     }
 
     public function hasApiKey()
@@ -76,5 +81,41 @@ class Hubspot extends Component
     public function getBlogTopics($params = [])
     {
         return $this->blogTopics->all($params)->getData();
+    }
+
+    public function subscribeTo($email, $blogId)
+    {
+
+        $this->contacts->updateByEmail($email, [
+
+        ]);
+    }
+
+    public function getContactPropetyGroupDetails()
+    {
+        return array_filter($this->contactProperties->all()->getData(), function ($property) {
+            return $property->groupName === "contactinformation";
+        });
+    }
+
+
+    public function getHubspotDefinedContactInformationProperties()
+    {
+        return array_filter($this->contactProperties->all()->getData(), function ($property) {
+            return $property->groupName === "contactinformation" && $property->hubspotDefined === true;
+        });
+    }
+
+
+    public function getContactInformationProperties()
+    {
+        return array_filter($this->contactProperties->all()->getData(), function ($property) {
+            return $property->groupName === "contactinformation";
+        });
+    }
+
+    public function getBlogSubscriptionFrequencies()
+    {
+
     }
 }

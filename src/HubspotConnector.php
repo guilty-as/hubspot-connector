@@ -10,6 +10,8 @@
 
 namespace Guilty\HubspotConnector;
 
+use craft\events\RegisterUrlRulesEvent;
+use craft\web\UrlManager;
 use Guilty\HubspotConnector\services\Hubspot as HubspotService;
 use Guilty\HubspotConnector\variables\HubspotConnectorVariable;
 use Guilty\HubspotConnector\models\Settings;
@@ -85,7 +87,41 @@ class HubspotConnector extends Plugin
             'hubspot-connector/settings',
             [
                 'settings' => $this->getSettings(),
+                'blogSubscriptionFrequencies' => $this->getFrequencyList(),
+                'contactProperties' => $this->getContactInformationPropertiesList(),
             ]
         );
+    }
+
+    protected function getFrequencyList()
+    {
+        return [
+            [
+                "label" => "Instant",
+                "value" => "instant",
+            ],
+            [
+                "label" => "Daily",
+                "value" => "daily",
+            ],
+            [
+                "label" => "Weekly",
+                "value" => "weekly",
+            ],
+            [
+                "label" => "Monthly",
+                "value" => "monthly",
+            ],
+        ];
+    }
+
+    protected function getContactInformationPropertiesList()
+    {
+        return array_map(function ($item) {
+            return [
+                "label" => $item->label,
+                "value" => $item->name,
+            ];
+        }, $this->hubspot->getHubspotDefinedContactInformationProperties());
     }
 }

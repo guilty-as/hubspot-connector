@@ -24,12 +24,24 @@ class Settings extends Model
      */
     public $enableBlogSubscriptionEndpoint = false;
 
+    /**
+     * @var string
+     */
+    public $defaultBlogSubscriptionFrequency = null;
+
+    /**
+     * @var string
+     */
+    public $blogSubscriptionProperty = null;
+
+
     public function rules()
     {
         return [
             ['apiKey', 'string'],
             ['apiKey', 'required'],
-            ['enableBlogSubscriptionEndpoint', 'bool'],
+            ['defaultBlogSubscriptionFrequency', 'string'],
+            ['blogSubscriptionProperty', 'string'],
         ];
     }
 }
