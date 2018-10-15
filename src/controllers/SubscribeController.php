@@ -9,14 +9,7 @@ use Guilty\HubspotConnector\HubspotConnector;
 class SubscribeController extends Controller
 {
     protected $allowAnonymous = true;
-
-    protected $blogSubscriptionFrequencies = [
-        'instant',
-        'daily',
-        'weekly',
-        'monthly',
-    ];
-
+    
     public function actionIndex()
     {
         $email = Craft::$app->getRequest()->getParam('email', null);
