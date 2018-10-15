@@ -9,16 +9,22 @@ use Guilty\HubspotConnector\HubspotConnector;
 class SubscribeController extends Controller
 {
     protected $allowAnonymous = true;
-    
+
     public function actionIndex()
     {
+        $plugin = HubspotConnector::getInstance();
+
+        if ($plugin->getSettings()->enableBlogSubscriptionEndpoint == false) {
+            return $this->asErrorJson("Blog subscription endpoint is disabled");
+        }
+
         $email = Craft::$app->getRequest()->getParam('email', null);
 
         if (!$email) {
             return $this->asErrorJson("email not defined");
         }
 
-        $service = HubspotConnector::getInstance()->hubspot;
+        $service = $plugin->hubspot;
 
         $contactExists = $service->hasContactByEmail($email);
 
