@@ -1,12 +1,4 @@
 <?php
-/**
- * HubSpot Connector plugin for Craft CMS 3.x
- *
- * Expose Hubspot api features in Twig and pull in content from your HubSpot Portal.
- *
- * @link      https://guilty.no
- * @copyright Copyright (c) 2018 Guilty AS
- */
 
 namespace Guilty\HubspotConnector;
 
@@ -65,6 +57,15 @@ class HubspotConnector extends Plugin
             $variable = $event->sender;
             $variable->set('hubspot', HubspotConnectorVariable::class);
         });
+
+
+        Event::on(
+            UrlManager::class,
+            UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+            function (RegisterUrlRulesEvent $event) {
+                $event->rules['hubspot/subscribe'] = 'hubspot-connector/subscribe';
+            }
+        );
     }
 
     // Protected Methods

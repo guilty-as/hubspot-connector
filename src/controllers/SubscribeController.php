@@ -1,6 +1,6 @@
 <?php
 
-namespace Guilty\HubspotConnector\Controllers;
+namespace Guilty\HubspotConnector\controllers;
 
 use Craft;
 use craft\web\Controller;
@@ -17,23 +17,29 @@ class SubscribeController extends Controller
         'monthly',
     ];
 
-
-
     public function actionIndex()
     {
-        die("Hello world");
+        $email = Craft::$app->getRequest()->getParam('email', null);
 
-        $request = Craft::$app->getRequest();
-
-        $blogId = $request->getParam('blogId', null);
-        $email = $request->getParam('email', null);
-
-        if (!$blogId || !$email) {
-            return false;
+        if (!$email) {
+            return $this->asErrorJson("email not defined");
         }
 
-        $success = HubspotConnector::getInstance()->hubspot->subscribeTo($email, $blogId);
+        $service = HubspotConnector::getInstance()->hubspot;
 
-        return true;
+        $contactExists = $service->hasContactByEmail($email);
+
+        if ($contactExists == false) {
+            $service->createContact([
+                [
+                    "property" => "email",
+                    "value" => $email,
+                ],
+            ]);
+        }
+
+        return $service->subscribeToBlogNewsletter($email)
+            ? $this->asJson(["success" => true, "message" => "You're now subscribed"])
+            : $this->asJson(["success" => false, "message" => "Could not subscribe your email"]);
     }
 }

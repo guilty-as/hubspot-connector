@@ -31,6 +31,10 @@ class Hubspot extends Component
     /** @var string */
     protected $apiKey;
 
+    /**
+     * @var \Guilty\HubspotConnector\models\Settings
+     */
+    protected $settings;
 
     public function init()
     {
@@ -38,6 +42,7 @@ class Hubspot extends Component
 
         $settings = HubspotConnector::$plugin->getSettings();
 
+        $this->settings = $settings;
         $this->apiKey = $settings->apiKey;
 
         if ($this->hasApiKey()) {
@@ -47,7 +52,11 @@ class Hubspot extends Component
 
     protected function setupClients()
     {
-        $client = new Client(['key' => $this->apiKey]);
+        $client = new Client([
+            'key' => $this->apiKey,
+        ], new \GuzzleHttp\Client([
+            'http_errors' => false,
+        ]));
 
         $this->contacts = new Contacts($client);
         $this->blogs = new Blogs($client);
@@ -83,12 +92,24 @@ class Hubspot extends Component
         return $this->blogTopics->all($params)->getData();
     }
 
-    public function subscribeTo($email, $blogId)
+    public function getContactByEmail($email)
     {
+        return $this->contacts->getByEmail($email)->getData();
+    }
 
-        $this->contacts->updateByEmail($email, [
 
-        ]);
+    /**
+     * @param string $email
+     * @return bool true if the contact was updated, false if not
+     */
+    public function subscribeToBlogNewsletter($email)
+    {
+        return $this->contacts->updateByEmail($email, [
+                [
+                    "property" => $this->settings->blogSubscriptionProperty,
+                    "value" => $this->settings->defaultBlogSubscriptionFrequency,
+                ],
+            ])->getStatusCode() === 204;
     }
 
     public function getContactPropetyGroupDetails()
@@ -117,5 +138,22 @@ class Hubspot extends Component
     public function getBlogSubscriptionFrequencies()
     {
 
+    }
+
+    public function createContact($properties)
+    {
+        return $this->contacts->create($properties)->getData();
+    }
+
+    public function hasContactByEmail($email)
+    {
+        $response = $this->getContactByEmail($email);
+
+
+        if (isset($response->status) && $response->status === "error") {
+            return false;
+        }
+
+        return true;
     }
 }
