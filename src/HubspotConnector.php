@@ -36,12 +36,12 @@ class HubspotConnector extends Plugin
         parent::init();
         self::$plugin = $this;
 
-        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function (Event $event) {
-            /** @var CraftVariable $variable */
-            $variable = $event->sender;
-            $variable->set('hubspot', HubspotConnectorVariable::class);
-        });
-
+        Event::on(
+            CraftVariable::class,
+            CraftVariable::EVENT_INIT,
+            function (Event $event) {
+                $event->sender->set('hubspot', HubspotConnectorVariable::class);
+            });
 
         Event::on(
             UrlManager::class,
@@ -56,7 +56,7 @@ class HubspotConnector extends Plugin
     {
         return new Settings();
     }
-    
+
     protected function settingsHtml(): string
     {
         return Craft::$app->view->renderTemplate(
