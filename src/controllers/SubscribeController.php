@@ -12,13 +12,15 @@ class SubscribeController extends Controller
 
     public function actionIndex()
     {
+        $this->requirePostRequest();
+
         $plugin = HubspotConnector::getInstance();
 
         if ($plugin->getSettings()->enableBlogSubscriptionEndpoint == false) {
             return $this->asErrorJson("Blog subscription endpoint is disabled");
         }
 
-        $email = Craft::$app->getRequest()->getParam('email', null);
+        $email = Craft::$app->getRequest()->getParam("email");
 
         if (!$email) {
             return $this->asErrorJson("email not defined");
