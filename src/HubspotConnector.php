@@ -17,36 +17,20 @@ use yii\base\Event;
 /**
  * Class HubspotConnector
  *
- * @author    Guilty AS
- * @package   HubspotConnector
- * @since     1.0.0
- *
  * @property  HubspotService $hubspot
  */
 class HubspotConnector extends Plugin
 {
-    // Static Properties
-    // =========================================================================
-
     /**
      * @var HubspotConnector
      */
     public static $plugin;
-
-    // Public Properties
-    // =========================================================================
 
     /**
      * @var string
      */
     public $schemaVersion = '1.0.0';
 
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         parent::init();
@@ -68,20 +52,11 @@ class HubspotConnector extends Plugin
         );
     }
 
-    // Protected Methods
-    // =========================================================================
-
-    /**
-     * @inheritdoc
-     */
     protected function createSettingsModel()
     {
         return new Settings();
     }
-
-    /**
-     * @inheritdoc
-     */
+    
     protected function settingsHtml(): string
     {
         return Craft::$app->view->renderTemplate(
