@@ -2,8 +2,11 @@
 
 namespace Guilty\HubspotConnector;
 
+use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\services\Fields;
 use craft\web\UrlManager;
+use Guilty\HubspotConnector\fields\HubspotBlogField;
 use Guilty\HubspotConnector\services\Hubspot as HubspotService;
 use Guilty\HubspotConnector\variables\HubspotConnectorVariable;
 use Guilty\HubspotConnector\models\Settings;
@@ -50,6 +53,14 @@ class HubspotConnector extends Plugin
                 $event->rules['hubspot/subscribe'] = 'hubspot-connector/subscribe';
             }
         );
+
+        Event::on(
+            Fields::class,
+            Fields::EVENT_REGISTER_FIELD_TYPES,
+            function (RegisterComponentTypesEvent $event) {
+                $event->types[] = HubspotBlogField::class;
+            });
+
     }
 
     protected function createSettingsModel()
