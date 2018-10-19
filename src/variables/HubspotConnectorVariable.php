@@ -16,7 +16,7 @@ class HubspotConnectorVariable
         return HubspotConnector::getInstance()->hubspot->getBlogPosts($blogId, $params)->objects;
     }
 
-    public function blogPostByTopics($topicIds, $blogId, $params = [])
+    public function blogPostByTopics($blogId, $topicIds, $params = [])
     {
         // In case you pass a single value
         if (!is_array($topicIds)) {

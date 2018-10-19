@@ -2,7 +2,7 @@
     "name": "guilty/hubspot-connector",
     "description": "Expose Hubspot API features in Twig and pull in content from your HubSpot Portal.",
     "type": "craft-plugin",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "keywords": [
         "craft",
         "cms",

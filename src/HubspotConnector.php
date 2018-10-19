@@ -7,6 +7,7 @@ use craft\events\RegisterUrlRulesEvent;
 use craft\services\Fields;
 use craft\web\UrlManager;
 use Guilty\HubspotConnector\fields\HubspotBlogField;
+use Guilty\HubspotConnector\fields\HubspotBlogTopicField;
 use Guilty\HubspotConnector\services\Hubspot as HubspotService;
 use Guilty\HubspotConnector\variables\HubspotConnectorVariable;
 use Guilty\HubspotConnector\models\Settings;
@@ -32,7 +33,7 @@ class HubspotConnector extends Plugin
     /**
      * @var string
      */
-    public $schemaVersion = '1.0.0';
+    public $schemaVersion = '1.0.2';
 
     public function init()
     {
@@ -59,6 +60,7 @@ class HubspotConnector extends Plugin
             Fields::EVENT_REGISTER_FIELD_TYPES,
             function (RegisterComponentTypesEvent $event) {
                 $event->types[] = HubspotBlogField::class;
+                $event->types[] = HubspotBlogTopicField::class;
             });
 
     }
