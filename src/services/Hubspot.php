@@ -133,6 +133,22 @@ class Hubspot extends Component
         return $this->contacts->all($params)->getData();
     }
 
+    public function createContact($properties)
+    {
+        return $this->contacts->create($properties)->getData();
+    }
+
+    public function hasContactByEmail($email)
+    {
+        $response = $this->getContactByEmail($email);
+
+        if (isset($response->status) && $response->status === "error") {
+            return false;
+        }
+
+        return true;
+    }
+
 
     // Convenience Methods
     // =========================================================================
@@ -163,6 +179,12 @@ class Hubspot extends Component
     }
 
 
+    /**
+     * Get all properties that are Hubspot defined (aka, default properties)
+     * that are in the "contactinformation" group
+     *
+     * @return array
+     */
     public function getHubspotDefinedContactInformationProperties()
     {
         return array_filter($this->contactProperties->all()->getData(), function ($property) {
@@ -170,7 +192,11 @@ class Hubspot extends Component
         });
     }
 
-
+    /**
+     * Get all properties that are in the "contactinformation" group
+     *
+     * @return array
+     */
     public function getContactInformationProperties()
     {
         return array_filter($this->contactProperties->all()->getData(), function ($property) {
@@ -180,23 +206,8 @@ class Hubspot extends Component
 
     public function getBlogSubscriptionFrequencies()
     {
-
+        // TODO(10 des 2018) ~ Helge: Implement
     }
 
-    public function createContact($properties)
-    {
-        return $this->contacts->create($properties)->getData();
-    }
 
-    public function hasContactByEmail($email)
-    {
-        $response = $this->getContactByEmail($email);
-
-
-        if (isset($response->status) && $response->status === "error") {
-            return false;
-        }
-
-        return true;
-    }
 }
