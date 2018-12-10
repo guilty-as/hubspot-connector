@@ -36,6 +36,8 @@ class Hubspot extends Component
      */
     protected $settings;
 
+    // Setup
+    // =========================================================================
     public function init()
     {
         parent::init();
@@ -70,16 +72,26 @@ class Hubspot extends Component
         return empty($this->apiKey) === false;
     }
 
+
+    // Blogs
+    // =========================================================================
     public function getBlogs($params = [])
     {
         return $this->blogs->all($params)->getData();
     }
 
+    public function getBlog($blogId)
+    {
+        return $this->blogs->getById($blogId)->getData();
+    }
+
+    // Blog Posts
+    // =========================================================================
     public function getBlogPosts($blogId = false, $params = [])
     {
         return $this->blogPosts->all(array_merge($params, [
             "content_group_id" => $blogId,
-        ]))->getData();
+        ]))->toArray();
     }
 
     public function getBlogPost($blogPostId)
@@ -87,18 +99,49 @@ class Hubspot extends Component
         return $this->blogPosts->getById($blogPostId)->getData();
     }
 
+    // Blog Topics
+    // =========================================================================
     public function getBlogTopics($params = [])
     {
         return $this->blogTopics->all($params)->getData();
     }
 
+    public function getBlogTopic($blogTopicId)
+    {
+        return $this->blogTopics->getById($blogTopicId)->getData();
+    }
+
+    public function searchBlogTopics($query, $params)
+    {
+        return $this->blogTopics->search($query, $params)->getData();
+    }
+
+    // Contacts
+    // =========================================================================
     public function getContactByEmail($email)
     {
         return $this->contacts->getByEmail($email)->getData();
     }
 
+    public function getContact($contactId)
+    {
+        return $this->contacts->getById($contactId)->getData();
+    }
+
+    public function getContacts($params = [])
+    {
+        return $this->contacts->all($params)->getData();
+    }
+
+
+    // Convenience Methods
+    // =========================================================================
 
     /**
+     * This will "subscribe" a contact/email to the seleted blog by magically
+     * setting the blogSubscriptionProperty on the contact object to a chosen
+     * "blogSubscriptionFrequency" (usually  daily, weekly, biweekly or monthly)
+     *
      * @param string $email
      * @return bool true if the contact was updated, false if not
      */
