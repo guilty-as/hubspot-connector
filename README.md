@@ -31,6 +31,8 @@ To install the plugin, follow these instructions.
 
 ## Using HubSpot Connector
 
+Here is a basic example, for more comprehensive examples and documentation check the [wiki](https://github.com/guilty-as/hubspot-connector/wiki/Introduction)
+
 ```twig
  {% for blog in craft.hubspot.blogs %}
     <a href="{{ blog.root_url }}">
