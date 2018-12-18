@@ -91,7 +91,7 @@ class Hubspot extends Component
     {
         return $this->blogPosts->all(array_merge($params, [
             "content_group_id" => $blogId,
-        ]))->toArray();
+        ]))->getData();
     }
 
     public function getBlogPost($blogPostId)
