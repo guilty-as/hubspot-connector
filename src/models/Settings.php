@@ -31,7 +31,7 @@ class Settings extends Model
     {
         return [
             ['apiKey', 'string'],
-            ['apiKey', 'required'],
+            ['apiKey', 'string'],
             ['defaultBlogSubscriptionFrequency', 'string'],
             ['blogSubscriptionProperty', 'string'],
         ];

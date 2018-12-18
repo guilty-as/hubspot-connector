@@ -33,7 +33,7 @@ class HubspotConnector extends Plugin
     /**
      * @var string
      */
-    public $schemaVersion = '1.0.2';
+    public $schemaVersion = '1.0.3';
 
     public function init()
     {
@@ -76,6 +76,7 @@ class HubspotConnector extends Plugin
             'hubspot-connector/settings',
             [
                 'settings' => $this->getSettings(),
+                'isConnected' => $this->hubspot->hasApiKey(),
                 'blogSubscriptionFrequencies' => $this->getFrequencyList(),
                 'contactProperties' => $this->getContactInformationPropertiesList(),
             ]
@@ -84,6 +85,10 @@ class HubspotConnector extends Plugin
 
     protected function getFrequencyList()
     {
+        if ($this->hubspot->hasApiKey() === false) {
+            return [];
+        }
+
         return [
             [
                 "label" => "Instant",
@@ -106,6 +111,12 @@ class HubspotConnector extends Plugin
 
     protected function getContactInformationPropertiesList()
     {
+
+
+        if ($this->hubspot->hasApiKey() === false) {
+            return [];
+        }
+
         return array_map(function ($item) {
             return [
                 "label" => $item->label,

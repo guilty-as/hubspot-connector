@@ -8,23 +8,27 @@
 
 <hr>
 
-{{ forms.lightswitchField({
-    label: 'Enable Blog Subscription Endpoint?',
-    instructions: 'Registers a controller action that allows you to subscribe a user to blog updates',
-    name: 'enableBlogSubscriptionEndpoint',
-    on: settings['enableBlogSubscriptionEndpoint']}) }}
+{% if isConnected %}
+
+    {{ forms.lightswitchField({
+        label: 'Enable Blog Subscription Endpoint?',
+        instructions: 'Registers a controller action that allows you to subscribe a user to blog updates',
+        name: 'enableBlogSubscriptionEndpoint',
+        on: settings['enableBlogSubscriptionEndpoint']}) }}
 
 
-{{ forms.selectField({
-    label: 'Blog Subscription Property',
-    instructions: 'Set the property that signifies the blog subscription frequency',
-    name: 'blogSubscriptionProperty',
-    value: settings['blogSubscriptionProperty'],
-    options: contactProperties }) }}
+    {{ forms.selectField({
+        label: 'Blog Subscription Property',
+        instructions: 'Set the property that signifies the blog subscription frequency',
+        name: 'blogSubscriptionProperty',
+        value: settings['blogSubscriptionProperty'],
+        options: contactProperties }) }}
 
-{{ forms.selectField({
-    label: 'Default Blog Subscription Frequency',
-    instructions: 'Set the default blog subscription frequency',
-    name: 'defaultBlogSubscriptionFrequency',
-    value: settings['defaultBlogSubscriptionFrequency'],
-    options: blogSubscriptionFrequencies }) }}
+    {{ forms.selectField({
+        label: 'Default Blog Subscription Frequency',
+        instructions: 'Set the default blog subscription frequency',
+        name: 'defaultBlogSubscriptionFrequency',
+        value: settings['defaultBlogSubscriptionFrequency'],
+        options: blogSubscriptionFrequencies }) }}
+
+{% endif %}
