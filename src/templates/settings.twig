@@ -31,4 +31,11 @@
         value: settings['defaultBlogSubscriptionFrequency'],
         options: blogSubscriptionFrequencies }) }}
 
+
+    {{ forms.textField({
+        label: 'Connect Timeout',
+        instructions: 'If hubspot does not respond to a request within this timeout, an empty array will be returned.',
+        name: 'connectTimeout',
+        value: settings['connectTimeout']}) }}
+
 {% endif %}

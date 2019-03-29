@@ -26,12 +26,15 @@ class Settings extends Model
      */
     public $blogSubscriptionProperty = null;
 
+    /** @var int  */
+    public $connectTimeout = 30;
 
     public function rules()
     {
         return [
             ['apiKey', 'string'],
             ['apiKey', 'string'],
+            ['connectTimeout', 'number'],
             ['defaultBlogSubscriptionFrequency', 'string'],
             ['blogSubscriptionProperty', 'string'],
         ];

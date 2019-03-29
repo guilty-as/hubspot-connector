@@ -4,6 +4,7 @@ namespace Guilty\HubspotConnector\services;
 
 use craft\base\Component;
 use Guilty\HubspotConnector\HubspotConnector;
+use GuzzleHttp\Exception\ConnectException;
 use SevenShores\Hubspot\Http\Client;
 use SevenShores\Hubspot\Resources\BlogPosts;
 use SevenShores\Hubspot\Resources\Blogs;
@@ -58,6 +59,7 @@ class Hubspot extends Component
             'key' => $this->apiKey,
         ], new \GuzzleHttp\Client([
             'http_errors' => false,
+            'connect_timeout' => $this->settings->connectTimeout,
         ]));
 
         $this->contacts = new Contacts($client);
@@ -77,72 +79,116 @@ class Hubspot extends Component
     // =========================================================================
     public function getBlogs($params = [])
     {
-        return $this->blogs->all($params)->getData();
+        try {
+            return $this->blogs->all($params)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function getBlog($blogId)
     {
-        return $this->blogs->getById($blogId)->getData();
+        try {
+            return $this->blogs->getById($blogId)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     // Blog Posts
     // =========================================================================
     public function getBlogPosts($blogId = false, $params = [])
     {
-        return $this->blogPosts->all(array_merge($params, [
-            "content_group_id" => $blogId,
-        ]))->getData();
+        try {
+            return $this->blogPosts->all(array_merge($params, [
+                "content_group_id" => $blogId,
+            ]))->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function getBlogPost($blogPostId)
     {
-        return $this->blogPosts->getById($blogPostId)->getData();
+        try {
+            return $this->blogPosts->getById($blogPostId)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     // Blog Topics
     // =========================================================================
     public function getBlogTopics($params = [])
     {
-        return $this->blogTopics->all($params)->getData();
+        try {
+            return $this->blogTopics->all($params)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function getBlogTopic($blogTopicId)
     {
-        return $this->blogTopics->getById($blogTopicId)->getData();
+        try {
+            return $this->blogTopics->getById($blogTopicId)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function searchBlogTopics($query, $params)
     {
-        return $this->blogTopics->search($query, $params)->getData();
+        try {
+            return $this->blogTopics->search($query, $params)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     // Contacts
     // =========================================================================
     public function getContactByEmail($email)
     {
-        return $this->contacts->getByEmail($email)->getData();
+        try {
+            return $this->contacts->getByEmail($email)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function getContact($contactId)
     {
-        return $this->contacts->getById($contactId)->getData();
+        try {
+            return $this->contacts->getById($contactId)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function getContacts($params = [])
     {
-        return $this->contacts->all($params)->getData();
+        try {
+            return $this->contacts->all($params)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function createContact($properties)
     {
-        return $this->contacts->create($properties)->getData();
+        try {
+            return $this->contacts->create($properties)->getData();
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function hasContactByEmail($email)
     {
         $response = $this->getContactByEmail($email);
 
-        if (isset($response->status) && $response->status === "error") {
+        if ($response == [] || isset($response->status) && $response->status === "error") {
             return false;
         }
 
@@ -159,23 +205,31 @@ class Hubspot extends Component
      * "blogSubscriptionFrequency" (usually  daily, weekly, biweekly or monthly)
      *
      * @param string $email
-     * @return bool true if the contact was updated, false if not
+     * @return array|bool true if the contact was updated, false if not
      */
     public function subscribeToBlogNewsletter($email)
     {
-        return $this->contacts->updateByEmail($email, [
-                [
-                    "property" => $this->settings->blogSubscriptionProperty,
-                    "value" => $this->settings->defaultBlogSubscriptionFrequency,
-                ],
-            ])->getStatusCode() === 204;
+        try {
+            return $this->contacts->updateByEmail($email, [
+                    [
+                        "property" => $this->settings->blogSubscriptionProperty,
+                        "value" => $this->settings->defaultBlogSubscriptionFrequency,
+                    ],
+                ])->getStatusCode() === 204;
+        } catch (ConnectException $exception) {
+            return false;
+        }
     }
 
     public function getContactPropetyGroupDetails()
     {
-        return array_filter($this->contactProperties->all()->getData(), function ($property) {
-            return $property->groupName === "contactinformation";
-        });
+        try {
+            return array_filter($this->contactProperties->all()->getData(), function ($property) {
+                return $property->groupName === "contactinformation";
+            });
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
 
@@ -187,9 +241,13 @@ class Hubspot extends Component
      */
     public function getHubspotDefinedContactInformationProperties()
     {
-        return array_filter($this->contactProperties->all()->getData(), function ($property) {
-            return $property->groupName === "contactinformation" && $property->hubspotDefined === true;
-        });
+        try {
+            return array_filter($this->contactProperties->all()->getData(), function ($property) {
+                return $property->groupName === "contactinformation" && $property->hubspotDefined === true;
+            });
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     /**
@@ -199,15 +257,17 @@ class Hubspot extends Component
      */
     public function getContactInformationProperties()
     {
-        return array_filter($this->contactProperties->all()->getData(), function ($property) {
-            return $property->groupName === "contactinformation";
-        });
+        try {
+            return array_filter($this->contactProperties->all()->getData(), function ($property) {
+                return $property->groupName === "contactinformation";
+            });
+        } catch (ConnectException $exception) {
+            return [];
+        }
     }
 
     public function getBlogSubscriptionFrequencies()
     {
         // TODO(10 des 2018) ~ Helge: Implement
     }
-
-
 }
