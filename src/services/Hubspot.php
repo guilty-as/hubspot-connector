@@ -5,6 +5,7 @@ namespace Guilty\HubspotConnector\services;
 use craft\base\Component;
 use Guilty\HubspotConnector\HubspotConnector;
 use GuzzleHttp\Exception\ConnectException;
+use SevenShores\Hubspot\Exceptions\BadRequest;
 use SevenShores\Hubspot\Http\Client;
 use SevenShores\Hubspot\Resources\BlogPosts;
 use SevenShores\Hubspot\Resources\Blogs;
@@ -81,7 +82,7 @@ class Hubspot extends Component
     {
         try {
             return $this->blogs->all($params)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -90,7 +91,7 @@ class Hubspot extends Component
     {
         try {
             return $this->blogs->getById($blogId)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -103,7 +104,7 @@ class Hubspot extends Component
             return $this->blogPosts->all(array_merge($params, [
                 "content_group_id" => $blogId,
             ]))->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -112,7 +113,7 @@ class Hubspot extends Component
     {
         try {
             return $this->blogPosts->getById($blogPostId)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -123,7 +124,7 @@ class Hubspot extends Component
     {
         try {
             return $this->blogTopics->all($params)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -132,7 +133,7 @@ class Hubspot extends Component
     {
         try {
             return $this->blogTopics->getById($blogTopicId)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -141,7 +142,7 @@ class Hubspot extends Component
     {
         try {
             return $this->blogTopics->search($query, $params)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -152,7 +153,7 @@ class Hubspot extends Component
     {
         try {
             return $this->contacts->getByEmail($email)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -161,7 +162,7 @@ class Hubspot extends Component
     {
         try {
             return $this->contacts->getById($contactId)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -170,7 +171,7 @@ class Hubspot extends Component
     {
         try {
             return $this->contacts->all($params)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -179,7 +180,7 @@ class Hubspot extends Component
     {
         try {
             return $this->contacts->create($properties)->getData()->objects;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -216,7 +217,7 @@ class Hubspot extends Component
                         "value" => $this->settings->defaultBlogSubscriptionFrequency,
                     ],
                 ])->getStatusCode() === 204;
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return false;
         }
     }
@@ -227,7 +228,7 @@ class Hubspot extends Component
             return array_filter($this->contactProperties->all()->getData(), function ($property) {
                 return $property->groupName === "contactinformation";
             });
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -245,7 +246,7 @@ class Hubspot extends Component
             return array_filter($this->contactProperties->all()->getData(), function ($property) {
                 return $property->groupName === "contactinformation" && $property->hubspotDefined === true;
             });
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
@@ -261,7 +262,7 @@ class Hubspot extends Component
             return array_filter($this->contactProperties->all()->getData(), function ($property) {
                 return $property->groupName === "contactinformation";
             });
-        } catch (ConnectException $exception) {
+        } catch (\Exception $exception) {
             return [];
         }
     }
