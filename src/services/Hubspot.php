@@ -59,7 +59,7 @@ class Hubspot extends Component
             'key' => $this->apiKey,
         ], new \GuzzleHttp\Client([
             'http_errors' => false,
-            'connect_timeout' => $this->settings->connectTimeout,
+            'timeout' => $this->settings->connectTimeout,
         ]));
 
         $this->contacts = new Contacts($client);
@@ -80,7 +80,7 @@ class Hubspot extends Component
     public function getBlogs($params = [])
     {
         try {
-            return $this->blogs->all($params)->getData();
+            return $this->blogs->all($params)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -89,7 +89,7 @@ class Hubspot extends Component
     public function getBlog($blogId)
     {
         try {
-            return $this->blogs->getById($blogId)->getData();
+            return $this->blogs->getById($blogId)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -102,7 +102,7 @@ class Hubspot extends Component
         try {
             return $this->blogPosts->all(array_merge($params, [
                 "content_group_id" => $blogId,
-            ]))->getData();
+            ]))->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -111,7 +111,7 @@ class Hubspot extends Component
     public function getBlogPost($blogPostId)
     {
         try {
-            return $this->blogPosts->getById($blogPostId)->getData();
+            return $this->blogPosts->getById($blogPostId)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -122,7 +122,7 @@ class Hubspot extends Component
     public function getBlogTopics($params = [])
     {
         try {
-            return $this->blogTopics->all($params)->getData();
+            return $this->blogTopics->all($params)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -131,7 +131,7 @@ class Hubspot extends Component
     public function getBlogTopic($blogTopicId)
     {
         try {
-            return $this->blogTopics->getById($blogTopicId)->getData();
+            return $this->blogTopics->getById($blogTopicId)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -140,7 +140,7 @@ class Hubspot extends Component
     public function searchBlogTopics($query, $params)
     {
         try {
-            return $this->blogTopics->search($query, $params)->getData();
+            return $this->blogTopics->search($query, $params)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -151,7 +151,7 @@ class Hubspot extends Component
     public function getContactByEmail($email)
     {
         try {
-            return $this->contacts->getByEmail($email)->getData();
+            return $this->contacts->getByEmail($email)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -160,7 +160,7 @@ class Hubspot extends Component
     public function getContact($contactId)
     {
         try {
-            return $this->contacts->getById($contactId)->getData();
+            return $this->contacts->getById($contactId)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -169,7 +169,7 @@ class Hubspot extends Component
     public function getContacts($params = [])
     {
         try {
-            return $this->contacts->all($params)->getData();
+            return $this->contacts->all($params)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
@@ -178,7 +178,7 @@ class Hubspot extends Component
     public function createContact($properties)
     {
         try {
-            return $this->contacts->create($properties)->getData();
+            return $this->contacts->create($properties)->getData()->objects;
         } catch (ConnectException $exception) {
             return [];
         }
