@@ -109,6 +109,17 @@ class Hubspot extends Component
         }
     }
 
+    public function getTotalBlogPosts($blogId = false, $params = [])
+    {
+        try {
+            return $this->blogPosts->all(array_merge($params, [
+                "content_group_id" => $blogId,
+            ]))->getData()->total;
+        } catch (\Exception $exception) {
+            return 0;
+        }
+    }
+
     public function getBlogPost($blogPostId)
     {
         try {
