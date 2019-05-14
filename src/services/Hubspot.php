@@ -123,6 +123,11 @@ class Hubspot extends Component
         return $this->contacts->getByEmail($email)->getData();
     }
 
+    public function getContactByUserToken($userToken)
+    {
+        return $this->contacts->getByToken($userToken)->getData();
+    }
+
     public function getContact($contactId)
     {
         return $this->contacts->getById($contactId)->getData();

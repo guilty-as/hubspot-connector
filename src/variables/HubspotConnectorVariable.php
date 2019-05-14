@@ -44,4 +44,20 @@ class HubspotConnectorVariable
     {
         return HubspotConnector::getInstance()->hubspot->getBlogPosts($blogId, $params)->total;
     }
+
+    public function contactByUserToken($userToken)
+    {
+        return HubspotConnector::getInstance()->hubspot->getContactByUserToken($userToken);
+    }
+
+    public function contact($contactId)
+    {
+        return HubspotConnector::getInstance()->hubspot->getContact($contactId);
+    }
+
+    public function contacts($params = [])
+    {
+        return HubspotConnector::getInstance()->hubspot->getContacts($params)->objects;
+    }
+
 }
