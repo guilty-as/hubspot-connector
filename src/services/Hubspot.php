@@ -3,13 +3,19 @@
 namespace Guilty\HubspotConnector\services;
 
 use craft\base\Component;
-use Guilty\HubspotConnector\HubspotConnector;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Exception\ConnectException;
+use SevenShores\Hubspot\Exceptions\BadRequest;
 use SevenShores\Hubspot\Http\Client;
 use SevenShores\Hubspot\Resources\BlogPosts;
 use SevenShores\Hubspot\Resources\Blogs;
 use SevenShores\Hubspot\Resources\BlogTopics;
 use SevenShores\Hubspot\Resources\ContactProperties;
 use SevenShores\Hubspot\Resources\Contacts;
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
+use Guilty\HubspotConnector\HubspotConnector;
+use Guilty\HubspotConnector\services\Guzzle\CraftCacheStorage;
 
 class Hubspot extends Component
 {
@@ -54,9 +60,20 @@ class Hubspot extends Component
 
     protected function setupClients()
     {
+        $stack = HandlerStack::create();
+
+        if ($this->settings->enableResponseCaching) {
+            $stack->push(new CacheMiddleware(
+                new PrivateCacheStrategy(
+                    new CraftCacheStorage()
+                )
+            ), 'cache');
+        }
+
         $client = new Client([
             'key' => $this->apiKey,
         ], new \GuzzleHttp\Client([
+            'handler' => $stack,
             'http_errors' => false,
         ]));
 
@@ -208,6 +225,4 @@ class Hubspot extends Component
     {
         // TODO(10 des 2018) ~ Helge: Implement
     }
-
-
 }
