@@ -31,4 +31,10 @@
         value: settings['defaultBlogSubscriptionFrequency'],
         options: blogSubscriptionFrequencies }) }}
 
+    {{ forms.lightswitchField({
+        label: 'Enable Response Caching',
+        instructions: 'Enables caching of all requests going to Hubspot',
+        name: 'enableResponseCaching',
+        on: settings['enableResponseCaching']}) }}
+
 {% endif %}
