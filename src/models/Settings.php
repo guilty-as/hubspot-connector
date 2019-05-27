@@ -26,6 +26,10 @@ class Settings extends Model
      */
     public $blogSubscriptionProperty = null;
 
+    /**
+     * @var bool
+     */
+    public $enableResponseCaching = false;
 
     public function rules()
     {
