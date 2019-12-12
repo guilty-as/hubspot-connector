@@ -1,28 +1,3 @@
-# Note: Hotfix for HubSpot Outage 28.03.2019 - 29.03.2019
-
-Here is a hotfix to make sure your sites don't break in production.
-
-
-Add this repo to your composer.json file,
-```
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/guilty-as/hubspot-connector"
-        }
-    ],
-```
-
-Then replace the version you are pulling in with this one:
-
-```
-"guilty/hubspot-connector": "dev-hotfix-hubspot-outage",
-```
-
-This will add a "timeout" setting in the hubspot connector settings page, set this to 1, if the request times out, all methods return an empty array, which you can take into account in your templates.
-
-
-
 # HubSpot Connector plugin for Craft CMS 3.x
 
 Expose Hubspot API features in Twig and pull in content from your HubSpot Portal.
