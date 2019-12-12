@@ -111,17 +111,21 @@ class HubspotConnector extends Plugin
 
     protected function getContactInformationPropertiesList()
     {
-
-
         if ($this->hubspot->hasApiKey() === false) {
             return [];
         }
 
-        return array_map(function ($item) {
-            return [
-                "label" => $item->label,
-                "value" => $item->name,
-            ];
-        }, $this->hubspot->getHubspotDefinedContactInformationProperties());
+        try {
+
+            return array_map(function ($item) {
+                return [
+                    "label" => $item->label,
+                    "value" => $item->name,
+                ];
+            }, $this->hubspot->getHubspotDefinedContactInformationProperties());
+        } catch (\Exception $e) {
+            // Prevent admin area from crashing if the api key is wrong
+            return [];
+        }
     }
 }

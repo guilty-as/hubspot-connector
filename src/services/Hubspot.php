@@ -86,7 +86,7 @@ class Hubspot extends Component
 
     public function hasApiKey()
     {
-        return empty($this->apiKey) === false;
+        return trim($this->apiKey) != "";
     }
 
 
